@@ -1,4 +1,4 @@
-name: FinansKoc APK Uretici
+name: Android APK Uretici
 
 on:
   push:
@@ -18,13 +18,39 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Flet Kur ve APK Derle
+      - name: Flet ve APK Araclarini Yukle
         run: |
-          pip install --upgrade pip
-          pip install "flet[all]==0.27.6"
-          flet build apk --no-rich-output -v
+          python -m pip install --upgrade pip
+          pip install "flet[all]==0.28.3"
 
-      - name: Hazir APK Dosyasini Yukle
+      - name: Proje Yapilandirmasini Hazirla
+        run: |
+          cat << 'EOF' > pyproject.toml
+          [project]
+          name = "finanskoc"
+          version = "1.0.0"
+          description = "Akilli Mobil Butce ve Finans Kocu"
+          requires-python = ">=3.9"
+          dependencies = [
+              "flet==0.28.3"
+          ]
+
+          [tool.flet]
+          org = "com.alperen"
+          product = "FinansKoc"
+          company = "FinansKoc"
+          copyright = "Copyright (C) 2026 by Alperen"
+
+          [tool.flet.app]
+          path = "."
+          EOF
+          echo "flet==0.28.3" > requirements.txt
+
+      - name: Android APK Olustur
+        run: |
+          flet build apk --no-rich-output -vv
+
+      - name: APK Dosyasini Indirilebilir Paket Yap
         uses: actions/upload-artifact@v4
         with:
           name: FinansKoc-Android-APK
