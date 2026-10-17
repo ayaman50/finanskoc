@@ -1,0 +1,42 @@
+name: FinansKoc APK Uretici
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodlari Cek
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Java 17 Kur (Android Derlemesi Icin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Flutter SDK Kur
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Flet Kur ve APK Derle
+        run: |
+          pip install --upgrade pip
+          pip install "flet[all]==0.27.6"
+          flet build apk --yes
+
+      - name: Hazir APK Dosyasini Yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: FinansKoc-Android-APK
+          path: build/apk/*.apk

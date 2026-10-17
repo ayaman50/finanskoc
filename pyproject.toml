@@ -1,0 +1,18 @@
+[project]
+name = "finanskoc"
+version = "1.0.0"
+description = "Akıllı Mobil Bütçe ve Finans Koçu"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "flet>=0.24.0"
+]
+
+[tool.flet]
+org = "com.alperen"
+product = "FinansKoç"
+company = "FinansKoc"
+copyright = "Copyright (C) 2026 by Alperen"
+
+[tool.flet.app]
+path = "."
